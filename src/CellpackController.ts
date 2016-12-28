@@ -48,7 +48,7 @@ export default class CellpackController extends Cellpack {
                 controller = new ControllerError()
             }
         } else {
-            if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`Route found!`)
+            if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`Route found: ${route.name}`)
             let controllerName = route.options.get('controller')
             actionName = route.options.get('action')
             controller = <any>this.controllers[controllerName] // REWRITE becase <any> >:()
