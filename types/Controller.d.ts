@@ -1,10 +1,10 @@
 /// <reference types="bluebird" />
 import * as Promise from "bluebird";
-import { Connection, Response, Microb } from "microb";
+import { Connection, Response, Environment, Microb } from "microb";
 export declare class Controller {
     private connection;
     private microb;
-    private environment;
+    protected environment: Environment;
     setConnection(connection: Connection): void;
     setMicrob(microb: Microb): void;
     protected getCellpack(name: string): null | any;

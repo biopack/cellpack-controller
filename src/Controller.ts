@@ -7,7 +7,7 @@ export class Controller {
 
     private connection: Connection
     private microb: Microb
-    private environment: Environment
+    protected environment: Environment
 
     setConnection(connection: Connection){
         this.connection = connection
