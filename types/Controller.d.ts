@@ -10,4 +10,5 @@ export declare class Controller {
     protected getCellpack(name: string): null | any;
     protected render(template: string, data: Object): Response;
     protected preAction(connection: Connection): Promise<void>;
+    init(): Promise<void>;
 }

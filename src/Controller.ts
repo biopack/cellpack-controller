@@ -38,4 +38,6 @@ export class Controller {
     protected preAction(connection: Connection): Promise<void> {
         return Promise.resolve()
     }
+
+    init(): Promise<void> { return Promise.resolve() }
 }

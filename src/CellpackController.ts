@@ -22,11 +22,11 @@ export default class CellpackController extends Cellpack {
                     let basename = Path.basename(file,".js")
                     let controllermodule = require(`${appRoot}/lib/controllers/${basename}`)
 
-
                     this.controllers[basename] = new (controllermodule.default)()
-
-                    // console.log(controllermodule.default)
-                    // this.controllers[file] = new (controllermodule.default)()
+                    this.controllers[basename].setMicrob(this.microb)
+                    if(typeof this.controllers[basename].init === "function"){
+                        this.controllers[basename].init()
+                    }
                 })
                 resolve()
             })
@@ -54,12 +54,9 @@ export default class CellpackController extends Cellpack {
             controller = <any>this.controllers[controllerName] // REWRITE becase <any> >:()
         }
 
-        // let controllerDummy = new Controller()
-        // controllerDummy.setConnection(connection)
-
         // add useful controller variables
         controller.setConnection(connection)
-        controller.setMicrob(this.microb)
+        //controller.setMicrob(this.microb)
 
         return new Promise<void | string | Response>((resolve, reject) => {
 
