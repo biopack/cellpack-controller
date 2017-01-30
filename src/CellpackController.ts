@@ -58,7 +58,7 @@ export default class CellpackController extends Cellpack {
         controller.setConnection(connection)
         //controller.setMicrob(this.microb)
 
-        return new Promise<void | string | Response>((resolve, reject) => {
+        return new Promise<void | number | string | Response>((resolve, reject) => {
 
             if(Lodash.isFunction(controller.preAction)){
                 return controller.preAction.call(controller, connection).then(() => { // must return promises
@@ -72,10 +72,13 @@ export default class CellpackController extends Cellpack {
 
              // controllerDummy
 
-        }).then<boolean>((ret: void | string | Response) => { // void | string | Response
+        }).then<boolean>((ret: void | number | string | Response) => { // void | string | Response
             if(Lodash.isString(ret)){
                 if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`String response detected.`)
                 connection.response.data = ret
+            } else if(Lodash.isNumber(ret)){
+                if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`ResponseStatus response detected.`)
+                connection.response.status = ret
             } else if(ret instanceof Response){
                 if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`Deep copy response: ${ret}`)
                 connection.response.deepCopy(ret)
