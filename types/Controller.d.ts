@@ -3,7 +3,7 @@ import * as Promise from "bluebird";
 import { Connection, Response, Environment, Microb } from "microb";
 export declare class Controller {
     private connection;
-    private microb;
+    protected microb: Microb;
     protected environment: Environment;
     setConnection(connection: Connection): void;
     setMicrob(microb: Microb): void;

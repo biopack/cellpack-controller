@@ -1,6 +1,6 @@
 {
   "name": "cellpack-controller",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "Controller wrap for Microb web framework",
   "keywords": [
       "Microb","mvc","framework","web", "controller"
@@ -12,10 +12,10 @@
   },
   "license": "GPL-3.0",
   "author": "scippio",
-  "main": "./lib/main.js",
-  "types": "./types/main.d.ts",
+  "main": "lib/main.js",
+  "types": "types/main.d.ts",
   "scripts": {
-      "start": "gulp",
+      "build": "gulp",
       "watch": "gulp watch",
       "test": "echo \"Error: no test specified\" && exit 1"
   },

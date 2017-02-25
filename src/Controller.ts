@@ -6,7 +6,7 @@ import { Connection, Response, Environment, Cellpack, Microb } from "microb"
 export class Controller {
 
     private connection: Connection
-    private microb: Microb
+    protected microb: Microb
     protected environment: Environment
 
     setConnection(connection: Connection){
