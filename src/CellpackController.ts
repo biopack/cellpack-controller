@@ -13,8 +13,14 @@ import { ControllerError } from "./ControllerError"
 export default class CellpackController extends Cellpack {
 
     private controllers: { [key: string]: Controller } = {}
+    private debug: boolean
 
     init(): Promise<void> {
+        this.config = this.environment.get("cellpacks")["cellpack-controller"]
+
+        if(this.config.debug !== undefined) this.debug = this.config.debug
+        else this.config = this.environment.get('debug',false)
+
         // load all controllers
         return new Promise<void>((resolve, reject) => {
             Fs.readdir(`${appRoot}/lib/controllers`, (err, files) => {
@@ -34,6 +40,7 @@ export default class CellpackController extends Cellpack {
     }
 
     request(connection: Connection): Promise<boolean> {
+        //
         let route = connection.environment.get('route')
         let actionName = "404"
         let controller: any
@@ -54,6 +61,7 @@ export default class CellpackController extends Cellpack {
             controller = <any>this.controllers[controllerName] // REWRITE becase <any> >:()
         }
 
+        controller = Object.assign(Object.create(controller), controller)
         // add useful controller variables
         controller.setConnection(connection)
         //controller.setMicrob(this.microb)
@@ -64,7 +72,7 @@ export default class CellpackController extends Cellpack {
                 return controller.preAction.call(controller, connection).then(() => { // must return promises
                     resolve(controller[actionName].call(controller, connection))
                 }).catch((err: any) => {
-                    if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`preAction Error: ${err}`)
+                    if(this.debug) this.transmitter.emit("log.cellpack.controller",`preAction Error: ${err}`)
                 })
             } else {
                 resolve(controller[actionName].call(controller, connection))
@@ -74,21 +82,21 @@ export default class CellpackController extends Cellpack {
 
         }).then<boolean>((ret: void | number | string | Response) => { // void | string | Response
             if(Lodash.isString(ret)){
-                if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`String response detected.`)
+                if(this.debug) this.transmitter.emit("log.cellpack.controller",`String response detected.`)
                 connection.response.data = ret
             } else if(Lodash.isNumber(ret)){
-                if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`ResponseStatus response detected.`)
+                if(this.debug) this.transmitter.emit("log.cellpack.controller",`ResponseStatus response detected.`)
                 connection.response.status = ret
             } else if(ret instanceof Response){
-                if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`Deep copy response: ${ret}`)
+                if(this.debug) this.transmitter.emit("log.cellpack.controller",`Deep copy response: ${ret}`)
                 connection.response.deepCopy(ret)
             } else {
-                if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`Void response`)
+                if(this.debug) this.transmitter.emit("log.cellpack.controller",`Void response`)
             }
 
             return true
         }).catch((err) => {
-            if(this.environment.get("debug")) this.transmitter.emit("log.cellpack.controller",`Error: ${err}`)
+            if(this.debug) this.transmitter.emit("log.cellpack.controller",`Error: ${err}`)
         })
 
     }
