@@ -83,9 +83,11 @@ export default class CellpackController extends Cellpack {
         }).then<boolean>((ret: void | number | string | Response) => { // void | string | Response
             if(Lodash.isString(ret)){
                 if(this.debug) this.transmitter.emit("log.cellpack.controller",`String response detected.`)
+                connection.response.headers.set("Content-Type","text/plain")
                 connection.response.data = ret
             } else if(Lodash.isNumber(ret)){
                 if(this.debug) this.transmitter.emit("log.cellpack.controller",`ResponseStatus response detected.`)
+                connection.response.headers.set("Content-Type","text/plain")
                 connection.response.status = ret
             } else if(ret instanceof Response){
                 if(this.debug) this.transmitter.emit("log.cellpack.controller",`Deep copy response: ${ret}`)
