@@ -77,7 +77,7 @@ export default class CellpackController extends Cellpack {
                     if(this.debug) this.transmitter.emit("log.cellpack.controller",`preAction Error: ${err}`)
                 })
             } else {
-                return resolve(controller[actionName].call(controller, connection))
+                return resolve(controller[controller.getAction()].call(controller, connection))
             }
 
              // controllerDummy
