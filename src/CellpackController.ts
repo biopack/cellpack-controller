@@ -64,18 +64,20 @@ export default class CellpackController extends Cellpack {
         controller = Object.assign(Object.create(controller), controller)
         // add useful controller variables
         controller.setConnection(connection)
+        controller.setAction(actionName)
         //controller.setMicrob(this.microb)
 
         return new Promise<void | number | string | Response>((resolve, reject) => {
 
             if(Lodash.isFunction(controller.preAction)){
-                return controller.preAction.call(controller, connection).then(() => { // must return promises
-                    resolve(controller[actionName].call(controller, connection))
+                return controller.preAction.call(controller, connection).then((controller: Controller) => { // must return promises
+                    let action = (<any>controller)[controller.getAction()]
+                    return resolve(action.call(controller, controller.getConnection()))
                 }).catch((err: any) => {
                     if(this.debug) this.transmitter.emit("log.cellpack.controller",`preAction Error: ${err}`)
                 })
             } else {
-                resolve(controller[actionName].call(controller, connection))
+                return resolve(controller[actionName].call(controller, connection))
             }
 
              // controllerDummy

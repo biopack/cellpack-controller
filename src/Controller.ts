@@ -8,12 +8,25 @@ export class Controller {
     private connection: Connection
     protected microb: Microb
     protected environment: Environment
+    protected action: string
 
-    setConnection(connection: Connection){
+    setAction(action: string): void {
+        this.action = action
+    }
+
+    getAction(): string {
+        return this.action
+    }
+
+    setConnection(connection: Connection): void {
         this.connection = connection
     }
 
-    setMicrob(microb: Microb){
+    getConnection(): Connection {
+        return this.connection
+    }
+
+    setMicrob(microb: Microb): void {
         this.microb = microb
         this.environment = microb.getEnvironment()
     }
@@ -35,8 +48,8 @@ export class Controller {
         return this.connection.response
     }
 
-    protected preAction(connection: Connection): Promise<void> {
-        return Promise.resolve()
+    protected preAction(connection: Connection): Promise<Controller> {
+        return Promise.resolve(this)
     }
 
     init(): Promise<void> { return Promise.resolve() }

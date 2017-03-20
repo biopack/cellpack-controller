@@ -1,6 +1,6 @@
 {
   "name": "cellpack-controller",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "description": "Controller wrap for Microb web framework",
   "keywords": [
       "Microb","mvc","framework","web", "controller"
